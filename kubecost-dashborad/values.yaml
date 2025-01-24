@@ -1,0 +1,187 @@
+kubecost-cost-analyzer:
+  annotations: {}
+  automountServiceAccountToken: true
+  containers:
+   args: []
+   env: []
+   ports:
+   - containerPort: 8000
+    name: cost-analyzer
+    protocol: TCP
+   - containerPort: 8080
+    name: cost-analyzer-frontend
+    protocol: TCP
+   resources:
+    limits:
+     cpu: 250m
+     memory: 400Mi
+    requests:
+     cpu: 100m
+     memory: 200Mi
+   volumeMounts:
+   - mountPath: /tmp
+    name: tmp-volume
+  image:
+   repository: docker.io/kubecost/cost-analyzer
+   tag: latest
+  labels: {}
+  nodeSelector:
+   app/workload: critical
+   topology.kubernetes.io/zone: ap-south-1a
+  role: cost-analyzer
+  scaling:
+   replicas: 1
+   revisionHistoryLimit: 10
+  serviceAnnotations: {}
+  serviceLabels: {}
+  volumes:
+  - emptyDir: {}
+   name: tmp-volume
+
+kubecost-aggregator:
+ containers:
+  args: []
+  env: []
+  ports:
+  - containerPort: 9004
+   name: aggregator
+   protocol: TCP
+  resources:
+   limits:
+    cpu: 250m
+    memory: 400Mi
+   requests:
+    cpu: 100m
+    memory: 200Mi
+ image:
+  repository: docker.io/kubecost/aggregator
+  tag: latest
+labels: {}
+ nodeSelector:
+  app/workload: critical
+  topology.kubernetes.io/zone: ap-south-1a
+ role: aggregator
+ scaling:
+  replicas: 1
+  revisionHistoryLimit: 10
+ serviceAnnotations: {}
+ serviceLabels: {}
+
+kubecost-cloud-cost:
+ containers:
+  args: []
+  env: []
+  ports:
+  - containerPort: 9005
+   name: cloud-cost
+   protocol: TCP
+  resources:
+   limits:
+    cpu: 250m
+    memory: 400Mi
+   requests:
+    cpu: 100m
+    memory: 200Mi
+ image:
+  repository: docker.io/kubecost/cloud-cost
+  tag: latest
+ labels: {}
+ nodeSelector:
+  app/workload: critical
+  topology.kubernetes.io/zone: ap-south-1a
+ role: cloud-cost
+ scaling:
+  replicas: 1
+  revisionHistoryLimit: 10
+ serviceAnnotations: {}
+ serviceLabels: {}
+
+kubecost-forecasting:
+ containers:
+  args: []
+  env: []
+  ports:
+  - containerPort: 5000
+   name: forecasting
+   protocol: TCP
+  resources:
+   limits:
+    cpu: 250m
+    memory: 400Mi
+   requests:
+    cpu: 100m
+    memory: 200Mi
+ enabled: true
+ image:
+repository: docker.io/kubecost/forecasting
+  tag: latest
+ labels: {}
+ nodeSelector:
+  app/workload: critical
+  topology.kubernetes.io/zone: ap-south-1a
+ role: forecasting
+ scaling:
+  replicas: 1
+  revisionHistoryLimit: 10
+ serviceAnnotations: {}
+ serviceLabels: {}
+
+kubecost-grafana:
+ containers:
+  args: []
+  env: []
+  ports:
+  - containerPort: 80
+   name: grafana
+   protocol: TCP
+  resources:
+   limits:
+    cpu: 250m
+    memory: 400Mi
+   requests:
+    cpu: 100m
+    memory: 200Mi
+ enabled: true
+ image:
+  repository: docker.io/grafana/grafana
+  tag: latest
+ labels: {}
+ nodeSelector:
+  app/workload: critical
+  topology.kubernetes.io/zone: ap-south-1a
+ role: grafana
+ scaling:
+  replicas: 1
+  revisionHistoryLimit: 10
+ serviceAnnotations: {}
+ serviceLabels: {}
+
+kubecost-prometheus-server:
+ containers:
+  args: []
+  env: []
+  ports:
+  - containerPort: 80
+   name: prometheus
+   protocol: TCP
+  resources:
+   limits:
+    cpu: 250m
+    memory: 400Mi
+   requests:
+    cpu: 100m
+memory: 200Mi
+ enabled: true
+ image:
+  repository: docker.io/prometheus/prometheus
+  tag: latest
+ labels: {}
+ nodeSelector:
+  app/workload: critical
+  topology.kubernetes.io/zone: ap-south-1a
+ role: prometheus-server
+ scaling:
+  replicas: 1
+  revisionHistoryLimit: 10
+ serviceAnnotations: {}
+ serviceLabels: {}
